@@ -65,35 +65,35 @@ to accept and return URI-encoded pet names using the jsbuiltin package.
 package main
 
 import (
-    "github.com/gopherjs/gopherjs/js"
-    "github.com/gopherjs/jsbuiltin"
+	"github.com/gopherjs/gopherjs/js"
+	"github.com/gopherjs/jsbuiltin"
 )
 
 func main() {
-    js.Global.Set("pet", map[string]interface{}{
-        "New": New,
-    })
+	js.Global.Set("pet", map[string]interface{}{
+		"New": New,
+	})
 }
 
 type Pet struct {
-    name string
+	name string
 }
 
 func New(name string) *js.Object {
-    return js.MakeWrapper(&Pet{name})
+	return js.MakeWrapper(&Pet{name})
 }
 
 func (p *Pet) Name() string {
-    return jsbuiltin.EncodeURIComponent(p.name)
+	return jsbuiltin.EncodeURIComponent(p.name)
 }
 
 func (p *Pet) SetName(uriComponent string) error {
-    name,err := jsbuiltin.DecodeURIComponent(uriComponent)
-    if err != nil {
-        // Malformed UTF8 in uriComponent
-        return err
-    }
-    p.name = name
-    return nil
+	name, err := jsbuiltin.DecodeURIComponent(uriComponent)
+	if err != nil {
+		// Malformed UTF8 in uriComponent
+		return err
+	}
+	p.name = name
+	return nil
 }
 ```
