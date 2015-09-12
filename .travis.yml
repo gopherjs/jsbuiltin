@@ -1,0 +1,11 @@
+language: go
+
+go:
+    - 1.5
+
+addons:
+    apt:
+        packages:
+            - nodejs
+install:
+    - go get -u github.com/gopherjs/gopherjs
