@@ -1,11 +1,12 @@
 language: go
-
 go:
-    - 1.5
-
+  - 1.5
 addons:
-    apt:
-        packages:
-            - nodejs
+  apt:
+    packages:
+      - nodejs
 install:
-    - go get -u github.com/gopherjs/gopherjs
+  - go get -u github.com/gopherjs/gopherjs
+script:
+  - diff -u <(echo -n) <(gofmt -d ./)
+  - gopherjs test
