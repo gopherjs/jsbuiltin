@@ -3,6 +3,8 @@ package jsbuiltin
 
 import (
 	"testing"
+
+	"github.com/gopherjs/gopherjs/js"
 )
 
 func TestEncodeURI(t *testing.T) {
@@ -135,4 +137,37 @@ func TestIsNaN(t *testing.T) {
 			t.Fatalf("IsNaN(%s) returned %t, not %t", value, result, expected)
 		}
 	}
+}
+
+func TestTypeOf(t *testing.T) {
+	data := map[interface{}]string{
+		// Standard JS types
+		js.Undefined:    "undefined",
+		nil:             "object",
+		true:            "boolean",
+		false:           "boolean",
+		12345:           "number",
+		"one two three": "string",
+		js.Global.Call:  "function",
+		js.Global:       "object",
+	}
+	// Check whether the JS interpretor supports the 'symbol' type (Node >= 0.12)
+	if TypeOf(js.Global.Get("Symbol")) == "function" {
+		symbol := js.Global.Call("Symbol", "foo")
+		data[&symbol] = "symbol"
+	}
+	for value, expected := range data {
+		result := TypeOf(value)
+		if result != expected {
+			t.Fatalf("Typeof(%s) returned %s, not %s", value, result, expected)
+		}
+	}
+
+	if to := TypeOf(map[string]string{}); to != "object" {
+		t.Fatalf("Obscure type not recognized as object")
+	}
+	if to := TypeOf(js.Object{}); to != "object" {
+		t.Fatal("Invalid/empty JS object not recognized as object")
+	}
+
 }

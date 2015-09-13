@@ -62,3 +62,22 @@ func IsFinite(value interface{}) bool {
 func IsNaN(value interface{}) bool {
 	return js.Global.Call("isNaN", value).Bool()
 }
+
+var typeOfFunc *js.Object
+
+func initTypeOf() {
+	typeOfFunc = js.Global.Call("eval", `(function() {
+			return function (x) {
+				return typeof x
+			}
+		})()
+	`)
+}
+
+// TypeOf returns the JavaScript type of the passed value
+func TypeOf(value interface{}) string {
+	if typeOfFunc == nil {
+		initTypeOf()
+	}
+	return typeOfFunc.Invoke(value).String()
+}

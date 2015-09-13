@@ -34,6 +34,7 @@ and its current state in this package.
 | Number()             | --        | See note below              |
 | String()             | --        | Use js.Object.String()      |
 | unescape()           | --        | deprecated circa 2000       |
+| typeof operator      | yes       |                             |
 
 #### Notes on unmplemented functions
 
@@ -55,7 +56,7 @@ and its current state in this package.
 Get or update this package and dependencies with:
 
 ```
-go get -u github.com/gopherjs/jsbuiltin
+go get -u -d -tags=js github.com/gopherjs/jsbuiltin
 ```
 
 ### Basic usage example
