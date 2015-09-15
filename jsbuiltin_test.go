@@ -139,6 +139,16 @@ func TestIsNaN(t *testing.T) {
 	}
 }
 
+// This is a hack to initialize the jsbuiltin object, until issue 306 is resolved
+// See https://github.com/gopherjs/gopherjs/issues/306
+func init() {
+	js.Global.Call("eval", `
+		GLOBAL.$jsbuiltin$ = {
+			typeoffunc: function(x) { return typeof x },
+			instanceoffunc: function(x,y) { return x instanceof y }
+		}`)
+}
+
 func TestTypeOf(t *testing.T) {
 	data := map[interface{}]string{
 		// Standard JS types
@@ -169,5 +179,26 @@ func TestTypeOf(t *testing.T) {
 	if to := TypeOf(js.Object{}); to != "object" {
 		t.Fatal("Invalid/empty JS object not recognized as object")
 	}
+}
 
+type ioTest struct {
+	value  interface{}
+	object *js.Object
+	result bool
+}
+
+func TestInstanceOf(t *testing.T) {
+	data := []ioTest{
+		// Standard JS types
+		ioTest{js.Undefined, js.Global.Get("Object"), false},
+		ioTest{"a string", js.Global.Get("String"), false},
+		ioTest{js.Global.Get("String").New("foo"), js.Global.Get("String"), true},
+		ioTest{js.Global.Get("String").New("foo"), js.Global.Get("Object"), true},
+	}
+	for _, test := range data {
+		result := InstanceOf(test.value, test.object)
+		if result != test.result {
+			t.Fatalf("InstanceOf(%s,%s) returned %s, not %s", test.value, test.object, result, test.result)
+		}
+	}
 }

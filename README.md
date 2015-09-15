@@ -35,6 +35,7 @@ and its current state in this package.
 | String()             | --        | Use js.Object.String()      |
 | unescape()           | --        | deprecated circa 2000       |
 | typeof operator      | yes       |                             |
+| instanceof operator  | yes       |                             |
 
 #### Notes on unmplemented functions
 
