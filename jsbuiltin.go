@@ -67,3 +67,10 @@ func IsNaN(value interface{}) bool {
 func TypeOf(value interface{}) string {
 	return js.Global.Get("$jsbuiltin$").Call("typeoffunc", value).String()
 }
+
+// InstanceOf returns true if value is an instance of object according to the
+// built-in 'instanceof' operator. `object` must be a *js.Object representing
+// a javascript constructor function.
+func InstanceOf(value interface{}, object *js.Object) bool {
+	return js.Global.Get("$jsbuiltin$").Call("instanceoffunc", value, object).Bool()
+}
