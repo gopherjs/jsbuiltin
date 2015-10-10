@@ -149,27 +149,32 @@ func init() {
 		}`)
 }
 
+type toTest struct {
+	value  interface{}
+	result string
+}
+
 func TestTypeOf(t *testing.T) {
-	data := map[interface{}]string{
+	data := []toTest{
 		// Standard JS types
-		js.Undefined:    "undefined",
-		nil:             "object",
-		true:            "boolean",
-		false:           "boolean",
-		12345:           "number",
-		"one two three": "string",
-		js.Global.Call:  "function",
-		js.Global:       "object",
+		toTest{js.Undefined, "undefined"},
+		toTest{nil, "object"},
+		toTest{true, "boolean"},
+		toTest{false, "boolean"},
+		toTest{12345, "number"},
+		toTest{"one two three", "string"},
+		toTest{js.Global.Call, "function"},
+		toTest{js.Global, "object"},
 	}
 	// Check whether the JS interpretor supports the 'symbol' type (Node >= 0.12)
 	if TypeOf(js.Global.Get("Symbol")) == "function" {
 		symbol := js.Global.Call("Symbol", "foo")
-		data[&symbol] = "symbol"
+		data = append(data, toTest{&symbol, "symbol"})
 	}
-	for value, expected := range data {
-		result := TypeOf(value)
-		if result != expected {
-			t.Fatalf("Typeof(%s) returned %s, not %s", value, result, expected)
+	for _, test := range data {
+		result := TypeOf(test.value)
+		if result != test.result {
+			t.Fatalf("Typeof(%s) returned %s, not %s", test.value, result, test.result)
 		}
 	}
 
