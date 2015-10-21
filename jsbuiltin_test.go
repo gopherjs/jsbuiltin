@@ -140,16 +140,6 @@ func TestIsNaN(t *testing.T) {
 	}
 }
 
-// This is a hack to initialize the jsbuiltin object, until issue 306 is resolved
-// See https://github.com/gopherjs/gopherjs/issues/306
-func init() {
-	js.Global.Call("eval", `
-		GLOBAL.$jsbuiltin$ = {
-			typeoffunc: function(x) { return typeof x },
-			instanceoffunc: function(x,y) { return x instanceof y }
-		}`)
-}
-
 type toTest struct {
 	value  interface{}
 	result string
