@@ -41,15 +41,15 @@ func TestDecodeURI(t *testing.T) {
 	}
 	for _, test := range data {
 		result, err := DecodeURI(test.URL)
-		if len(test.ExpectedError) > 0 {
+		if test.ExpectedError != "" {
 			if err == nil {
 				t.Fatalf("DecodeURI(%s) should have resulted in an error", test.URL)
 			}
 			if err.Error() != test.ExpectedError {
-				t.Fatalf("DecodeURI(%s) should have resulted in error '%s', got '%s'", test.ExpectedError, err)
+				t.Fatalf("DecodeURI(%s) should have resulted in error '%s', got '%s'", test.URL, test.ExpectedError, err)
 			}
 		} else {
-			if err != nil && err.Error() != test.ExpectedError {
+			if err != nil {
 				t.Fatal("DecodeURI() resulted in an error: %s", err)
 			}
 			if result != test.ExpectedURL {
@@ -86,15 +86,15 @@ func TestDecodeURIComponentn(t *testing.T) {
 	}
 	for _, test := range data {
 		result, err := DecodeURIComponent(test.URL)
-		if len(test.ExpectedError) > 0 {
+		if test.ExpectedError != "" {
 			if err == nil {
 				t.Fatalf("DecodeURIComponent(%s) should have resulted in an error", test.URL)
 			}
 			if err.Error() != test.ExpectedError {
-				t.Fatalf("DecodeURIComponent(%s) should have resulted in error '%s', got '%s'", test.ExpectedError, err)
+				t.Fatalf("DecodeURIComponent(%s) should have resulted in error '%s', got '%s'", test.URL, test.ExpectedError, err)
 			}
 		} else {
-			if err != nil && err.Error() != test.ExpectedError {
+			if err != nil {
 				t.Fatal("DecodeURIComponent() resulted in an error: %s", err)
 			}
 			if result != test.ExpectedURL {
