@@ -1,5 +1,3 @@
-// +build js
-
 // Package jsbuiltin provides minimal wrappers around some JavasScript
 // built-in functions.
 package jsbuiltin
