@@ -61,6 +61,19 @@ func IsNaN(value interface{}) bool {
 	return js.Global.Call("isNaN", value).Bool()
 }
 
+// Type constants represent the JavaScript builtin types, which may be returned
+// by TypeOf().
+const (
+	TypeUndefined = "undefined"
+	TypeNull      = "null"
+	TypeObject    = "object"
+	TypeBoolean   = "boolean"
+	TypeNumber    = "number"
+	TypeString    = "string"
+	TypeFunction  = "function"
+	TypeSymbol    = "symbol"
+)
+
 // TypeOf returns the JavaScript type of the passed value
 func TypeOf(value interface{}) string {
 	return js.Global.Get("$jsbuiltin$").Call("typeoffunc", value).String()
