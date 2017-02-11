@@ -27,7 +27,7 @@ func EncodeURI(uri string) string {
 	return js.Global.Call("encodeURI", uri).String()
 }
 
-// EncodeURIComponents encodes a Uniform Resource Identifier (URI) component
+// EncodeURIComponent encodes a Uniform Resource Identifier (URI) component
 // by replacing each instance of certain characters by one, two, three, or
 // four escape sequences representing the UTF-8 encoding of the character
 // (will only be four escape sequences for characters composed of two
