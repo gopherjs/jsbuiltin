@@ -27,7 +27,7 @@ func EncodeURI(uri string) string {
 	return js.Global.Call("encodeURI", uri).String()
 }
 
-// EncodeURIComponents encodes a Uniform Resource Identifier (URI) component
+// EncodeURIComponent encodes a Uniform Resource Identifier (URI) component
 // by replacing each instance of certain characters by one, two, three, or
 // four escape sequences representing the UTF-8 encoding of the character
 // (will only be four escape sequences for characters composed of two
@@ -60,6 +60,19 @@ func IsFinite(value interface{}) bool {
 func IsNaN(value interface{}) bool {
 	return js.Global.Call("isNaN", value).Bool()
 }
+
+// Type constants represent the JavaScript builtin types, which may be returned
+// by TypeOf().
+const (
+	TypeUndefined = "undefined"
+	TypeNull      = "null"
+	TypeObject    = "object"
+	TypeBoolean   = "boolean"
+	TypeNumber    = "number"
+	TypeString    = "string"
+	TypeFunction  = "function"
+	TypeSymbol    = "symbol"
+)
 
 // TypeOf returns the JavaScript type of the passed value
 func TypeOf(value interface{}) string {
