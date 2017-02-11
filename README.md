@@ -1,4 +1,4 @@
-[![Build Status](https://api.travis-ci.org/gopherjs/jsbuiltin.svg?branch=master)](https://travis-ci.org/gopherjs/jsbuiltin)
+[![Build Status](https://api.travis-ci.org/gopherjs/jsbuiltin.svg?branch=master)](https://travis-ci.org/gopherjs/jsbuiltin) [![GoDoc](https://godoc.org/github.com/gopherjs/jsbuiltin?status.png)](http://godoc.org/github.com/gopherjs/jsbuiltin)
 
 jsbuiltin - Built-in JavaScript functions for GopherJS
 ------------------------------------------------------
