@@ -50,7 +50,7 @@ func TestDecodeURI(t *testing.T) {
 			}
 		} else {
 			if err != nil {
-				t.Fatal("DecodeURI() resulted in an error: %s", err)
+				t.Fatalf("DecodeURI() resulted in an error: %s", err)
 			}
 			if result != test.ExpectedURL {
 				t.Fatalf("DecodeURI(%s) returned '%s', not '%s'", test.URL, result, test.ExpectedURL)
@@ -95,7 +95,7 @@ func TestDecodeURIComponentn(t *testing.T) {
 			}
 		} else {
 			if err != nil {
-				t.Fatal("DecodeURIComponent() resulted in an error: %s", err)
+				t.Fatalf("DecodeURIComponent() resulted in an error: %s", err)
 			}
 			if result != test.ExpectedURL {
 				t.Fatalf("DecodeURIComponent(%s) returned '%s', not '%s'", test.URL, result, test.ExpectedURL)
@@ -194,7 +194,7 @@ func TestInstanceOf(t *testing.T) {
 	for _, test := range data {
 		result := InstanceOf(test.value, test.object)
 		if result != test.result {
-			t.Fatalf("InstanceOf(%s,%s) returned %s, not %s", test.value, test.object, result, test.result)
+			t.Fatalf("InstanceOf(%s,%s) returned %t, not %t", test.value, test.object, result, test.result)
 		}
 	}
 }
