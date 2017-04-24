@@ -3,6 +3,8 @@
 package jsbuiltin
 
 import (
+	"errors"
+
 	"github.com/gopherjs/gopherjs/js"
 )
 
@@ -84,4 +86,13 @@ func TypeOf(value interface{}) string {
 // a javascript constructor function.
 func InstanceOf(value interface{}, object *js.Object) bool {
 	return js.Global.Get("$jsbuiltin$").Call("instanceoffunc", value, object).Bool()
+}
+
+// In returns true if key is a member of obj. An error is returned if obj is not
+// a JavaScript object.
+func In(key string, obj *js.Object) (ok bool, err error) {
+	if obj == nil || obj == js.Undefined || TypeOf(obj) != TypeObject {
+		return false, errors.New("obj not a JavaScript object")
+	}
+	return js.Global.Get("$jsbuiltin$").Call("infunc", key, obj).Bool(), nil
 }
