@@ -50,7 +50,7 @@ func TestDecodeURI(t *testing.T) {
 			}
 		} else {
 			if err != nil {
-				t.Fatal("DecodeURI() resulted in an error: %s", err)
+				t.Fatalf("DecodeURI() resulted in an error: %s", err)
 			}
 			if result != test.ExpectedURL {
 				t.Fatalf("DecodeURI(%s) returned '%s', not '%s'", test.URL, result, test.ExpectedURL)
@@ -95,7 +95,7 @@ func TestDecodeURIComponentn(t *testing.T) {
 			}
 		} else {
 			if err != nil {
-				t.Fatal("DecodeURIComponent() resulted in an error: %s", err)
+				t.Fatalf("DecodeURIComponent() resulted in an error: %s", err)
 			}
 			if result != test.ExpectedURL {
 				t.Fatalf("DecodeURIComponent(%s) returned '%s', not '%s'", test.URL, result, test.ExpectedURL)
@@ -194,7 +194,40 @@ func TestInstanceOf(t *testing.T) {
 	for _, test := range data {
 		result := InstanceOf(test.value, test.object)
 		if result != test.result {
-			t.Fatalf("InstanceOf(%s,%s) returned %s, not %s", test.value, test.object, result, test.result)
+			t.Errorf("InstanceOf(%s,%s) returned %t, not %t", test.value, test.object, result, test.result)
+		}
+	}
+}
+
+type inTest struct {
+	obj    *js.Object
+	key    string
+	result bool
+	err    string
+}
+
+func TestIn(t *testing.T) {
+	obj := js.Global.Get("Object").New()
+	obj.Set("foo", "bar")
+	jsString := js.Global.Call("eval", `'"test string"'`)
+	data := []inTest{
+		{obj: obj, key: "foo", result: true},
+		{obj: obj, key: "bar", result: false},
+		{obj: js.Undefined, key: "foo", err: "obj not a JavaScript function"},
+		{obj: nil, key: "foo", err: "obj not a JavaScript function"},
+		{obj: jsString, key: "foo", err: "obj not a JavaScript function"},
+	}
+	for _, test := range data {
+		result, err := In(test.key, test.obj)
+		var msg string
+		if err != nil {
+			msg = err.Error()
+		}
+		if msg != test.err {
+			t.Errorf("Unexpected error: %s", msg)
+		}
+		if result != test.result {
+			t.Errorf("In(%v, %s) returned %t, not %t", test.obj, test.key, result, test.result)
 		}
 	}
 }
