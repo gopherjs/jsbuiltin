@@ -8,6 +8,14 @@ import (
 	"github.com/gopherjs/gopherjs/js"
 )
 
+var (
+	util = js.Global.Call("require", "util")
+)
+
+func inspect(i interface{}) string {
+	return util.Call("inspect", i).String()
+}
+
 func TestEncodeURI(t *testing.T) {
 	data := map[string]string{
 		"http://foo.com/?msg=Привет мир.": "http://foo.com/?msg=%D0%9F%D1%80%D0%B8%D0%B2%D0%B5%D1%82%20%D0%BC%D0%B8%D1%80.",
@@ -213,9 +221,9 @@ func TestIn(t *testing.T) {
 	data := []inTest{
 		{obj: obj, key: "foo", result: true},
 		{obj: obj, key: "bar", result: false},
-		{obj: js.Undefined, key: "foo", err: "obj not a JavaScript function"},
-		{obj: nil, key: "foo", err: "obj not a JavaScript function"},
-		{obj: jsString, key: "foo", err: "obj not a JavaScript function"},
+		{obj: js.Undefined, key: "foo", err: "obj not a JavaScript object"},
+		{obj: nil, key: "foo", err: "obj not a JavaScript object"},
+		{obj: jsString, key: "foo", err: "obj not a JavaScript object"},
 	}
 	for _, test := range data {
 		result, err := In(test.key, test.obj)
@@ -224,10 +232,10 @@ func TestIn(t *testing.T) {
 			msg = err.Error()
 		}
 		if msg != test.err {
-			t.Errorf("Unexpected error: %s", msg)
+			t.Errorf("Unexpected error for In(%v, %s): got %q, want %q", inspect(test.obj), test.key, msg, test.err)
 		}
 		if result != test.result {
-			t.Errorf("In(%v, %s) returned %t, not %t", test.obj, test.key, result, test.result)
+			t.Errorf("In(%v, %s) returned %t, not %t", inspect(test.obj), test.key, result, test.result)
 		}
 	}
 }
